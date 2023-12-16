@@ -1,0 +1,59 @@
+import torch
+import torch.nn as nn
+
+class RotaryEmbedding(nn.Module):
+    def __init__(self, d_model):
+        super(RotaryEmbedding, self).__init__()
+        self.d_model = d_model
+        self.theta = nn.Parameter(torch.zeros(d_model // 2))
+        self.rotary_projection = nn.Linear(d_model // 2, d_model, bias=False)
+
+    def forward(self, x, position):
+        sin = torch.sin(position * 2.0**self.theta)
+        cos = torch.cos(position * 2.0**self.theta)
+        sinusoids = torch.cat([sin, cos], dim=-1)
+        rotary_embeddings = self.rotary_projection(sinusoids)
+        return x + rotary_embeddings
+
+
+class GPT2SmallWithRotary(nn.Module):
+    def __init__(self, vocab_size, d_model=768, nhead=12, num_encoder_layers=12):
+        super(GPT2SmallWithRotary, self).__init__()
+
+        # Embedding layer with Rotary Positional Embedding
+        self.embedding = nn.Embedding(vocab_size, d_model)
+        self.rotary_embedding = RotaryEmbedding(d_model)
+
+        # Transformer layers
+        self.transformer_layers = nn.TransformerEncoderLayer(
+            d_model=d_model,
+            nhead=nhead,
+        )
+        self.transformer = nn.TransformerEncoder(
+            self.transformer_layers,
+            num_layers=num_encoder_layers,
+        )
+
+        # Output layer
+        self.fc = nn.Linear(d_model, vocab_size)
+
+    def forward(self, x, position):
+        x = self.embedding(x)
+        x = self.rotary_embedding(x, position)
+        x = self.transformer(x)
+        x = self.fc(x)
+        return x
+
+# Instantiate the model with Rotary Positional Embedding
+model_with_rotary = GPT2SmallWithRotary(vocab_size)
+
+# Load GPT-2 125M model checkpoints (for validation)
+checkpoint_path = "path/to/gpt2_125M_checkpoint.pth"
+checkpoint = torch.load(checkpoint_path)
+model_with_rotary.load_state_dict(checkpoint['model_state_dict'])
+
+# Perform a sample prediction
+input_sequence = torch.randint(0, vocab_size, (1, 10))  # Replace 10 with the desired sequence length
+position = torch.arange(10).unsqueeze(0)  # Positional information
+output_sequence = model_with_rotary(input_sequence, position)
+print(output_sequence)
