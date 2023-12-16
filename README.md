@@ -15,9 +15,7 @@ Adding alterations to our original GPT-2 model architecture to experiment and as
 - **Group Query Attention:** Equip model with the Group Query Attention mechanism 
 - **Sliding Window Attention:** Imbibe the Sliding Window Attention mechanism in model and observe its effects on model performance.
 
-## Task 3: Training Loop Implementation (40 Points)
-
----
+# Task 3: Training Loop Implementation
 
 Finally, create a training loop considering these following requirements:
 
