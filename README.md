@@ -1,3 +1,5 @@
+![image](https://github.com/arizzaa13/Implementation-and-Optimization-of-GPT-2-Model/assets/78647475/b8060b40-8cec-4846-a262-b693669c60e4)
+
 # Implementation-and-Optimization-of-GPT-2-Model
 This repository contains Implementation and Optimization of GPT-2 Model through transformer architecture and modifying its structure for improved performance further it includes developing an efficient training loop and implementation of distributed training applicable across multiple GPUs.
 
