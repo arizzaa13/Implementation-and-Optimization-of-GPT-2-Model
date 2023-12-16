@@ -12,13 +12,15 @@ At first we start by implementing the GPT-2 model. We will create a basic versio
 Adding alterations to our original GPT-2 model architecture to experiment and assess the potential of improvements.
 
 - **Rotary Positional Embedding:** Replacing the original positional embeddings in the GPT-2 model with Rotary embeddings.
-- **Group Query Attention:** Equip model with the Group Query Attention mechanism 
-- **Sliding Window Attention:** Imbibe the Sliding Window Attention mechanism in model and observe its effects on model performance.
+- The code for the 'RotaryEmbedding' module and modifies the 'GPT2SmallWithRotary' model to include Rotary Positional Embedding. Moreover,we need to replace 'vocab_size' with the actual vocabulary size used in our task.
+- **Group Query Attention:** Equip model with the Group Query Attention mechanism .
+- The code for Group Query Attention adds the 'GroupQueryAttention' module and modifies the 'GPT2SmallWithGroupQueryAttention' model to incorporate the Group Query Attention mechanism. Moreover,we need to replace 'vocab_size' with the actual vocabulary size used in our task.
+- **Sliding Window Attention:** Imbibe the Sliding Window Attention mechanism in model and observe its effects on model performance.Moreover,we need to replace 'vocab_size' with the actual vocabulary size used in our task.
 
 # Task 3: Training Loop Implementation
 
 Finally, create a training loop considering these following requirements:
 
-1. **Single GPU Training Loop:** base implementation should be equipped to train model on a single GPU setup.
-2. **Distributed Data Parallel (DDP):** Extend single GPU training loop to support training across multiple GPUs using DDP. 
-3. **Fully Sharded Data Parallel (FSDP):** Implement FSDP as a part of your training loop to shard the model parameters, gradients, and optimizer state.
+1. **Single GPU Training Loop:** base implementation should be equipped to train model on a single GPU setup.**Note** - We need to replace 'train_data_loader' with your actual training data loader.
+3. **Distributed Data Parallel (DDP):** Extend single GPU training loop to support training across multiple GPUs using DDP. 
+4. **Fully Sharded Data Parallel (FSDP):** Implement FSDP as a part of your training loop to shard the model parameters, gradients, and optimizer state.
